@@ -81,7 +81,7 @@ The structure of BERT input and output files and the specific commands that you 
 as the software matures, but for now you have to deal with some quirks in order to get data in and out.
 
 
-#### Input data
+#### Input Data
 
 My datasets start their life as XML files but internally I convert these into YAML files where each record has a unique **ID**, which refers back to 
 Pubmed, and **Text**, which is a composite of the paper Title, Abstract and Authors. For example:
@@ -112,7 +112,7 @@ My approach was to:
 
 The scripts that I use for this are provided in this repository.
 
-#### Convert YAML to Training data
+#### Convert YAML to Training Data
 
 The Training Data format has 4 columns, separated by a **Tab** (\t) character
 - column 1 - a unique ID
@@ -175,8 +175,16 @@ id	text
 
 OK - we have the three input data files - train.tsv. dev.tsv and test.tsv - now we can actually use BERT
 
+If you want to try this out I have included some samples of my dataset here. 
+**NOTE** these are small datasets - 800 training records and 100 each for validation and test. 
+In comparison, my full dataset has around 18,000 records - but these samples should be enough for you to walk through all the steps described here
 
-***Include a test sample of real data here ?***
+The files are:
+- [train.tsv.gz](train.tsv.tgz)
+- [dev.tsv.gz](dev.tsv.tgz)
+- [test_original.tsv.gz](test_original.tsv.tgz)
+- [test.tsv.gz](test.tsv.tgz)
+
 
 #### Run BERT Fine-Tuning
 
@@ -285,11 +293,21 @@ drwxr-xr-x 2 jones jones       4096 Mar 13 16:12 eval
 I don't know what some of these represent but the **model.ckpt-2673** files represent the final checkpoint (the number on your files will be different) 
 and **eval_results.txt** contains the summary accuracy and loss results.
 
-### Varying the run parameters
+### Varying the Run Parameters
 
-[...]
+There are only a few parameters that are available to the user from the command line:
+- max_seq_length - the number of words in the document to include in training.
+- train_batch_size
+- learning_rate
+- num_epochs
 
-### Predict the results on the Test dataset
+With the size of the Base model and the memory constraints of a GPU, you have little room for variation with these parameters. 
+You can try increasing, or decreasing, **max_seq_length** by factors of 2 and doing the opposite with the **train_batch_size**.
+Don't be surprised if you get an out-of-memory error. **learning_rate** and **num_epochs** should not have that problem, but with
+my application they did not make much difference to the accuracy.
+
+
+### Predict the Results on the Test Dataset
 
 Now we have trained our model and seen that the accuracy is as good as we can get it.
 
@@ -367,12 +385,51 @@ prediction and an asterisk shows lines where the prediction is correct.
 I can then look up the Pubmed abstract for each paper that it got wrong and see if I can rationalize the decision. In many/most cases I can't do
 that but in some I see a reveiw paper or one that describes a non-human target.
 
+Given the good accuracy that I got from the training/evaluation phase, the results with the test set are a little disappointing. 
+Not sure why this is - I should reshuffle the datasets and try a few other runs.
+
+But overall, for my application, this custom model is a very useful addition to my data processing pipeline, identifying some 
+papers that I would have missed as well as some that are reasonable predictions even if they are not exactly what I want.
 
 
 
-### Predict new data records
+### Predict on New Data Records
 
-**evaluate_results.py**
+Now that I have my trained model I want to use it in production whenever I have new batches of data. These have not been classified 
+ahead of time and so I just give them the arbitrary label 0, run them through the model and make alist of those predicted to be positives.
+
+[evaluate_new_data.py](evaluate_new_data.py) is a variant of evaluate_test_set_predictions.py
+
+```shell
+$ python evaluate_new_data.py --tsv test_original.tsv --results test_results.tsv
+26004977
+30333183
+22286140
+21723685
+[...]
+```
+
+This process is still somewhat clunky as I need to convert the raw data into TSV format (both training and test format), but hopefully I can streamline this.
+
+### Next Steps
+
+Here are some avenues that I want to explore:
+
+- see if using the Cased model has any effect on accuracy
+- try running BERT on TPUs with the Large pre-trained model
+- dive into the BERT code some more to really understand all the options, etc
+- try this approach with text from patents
+- try this approach with Pubmed text using other classification criteria
+
+
+I hope you find this repository to be useful in your work - good luck !
+
+*And thanks again to Javed Qadrud-Din*
+
+
+
+
+
 
 
 

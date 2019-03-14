@@ -1,3 +1,9 @@
+# convert_yml_to_tsv.py
+
+# Copyright 2019  Robert Jones  jones@craic.com   Craic Computing LLC
+
+# This software is made freely available under the terms of the MIT license
+
 # yaml format is
 #
 #- id: '28955949'
@@ -7,8 +13,6 @@
 # TSV output format is
 #
 # <id> <label> <arbitrary char> <text>
-
-
 
 
 import os

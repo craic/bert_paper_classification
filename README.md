@@ -180,10 +180,10 @@ If you want to try this out I have included some samples of my dataset here.
 In comparison, my full dataset has around 18,000 records - but these samples should be enough for you to walk through all the steps described here
 
 The files are:
-- [train.tsv.gz](train.tsv.tgz)
-- [dev.tsv.gz](dev.tsv.tgz)
-- [test_original.tsv.gz](test_original.tsv.tgz)
-- [test.tsv.gz](test.tsv.tgz)
+- [train.tsv.gz](blob/master/train.tsv.tgz)
+- [dev.tsv.gz](blob/master/dev.tsv.tgz)
+- [test_original.tsv.gz](blob/master/test_original.tsv.tgz)
+- [test.tsv.gz](blob/master/test.tsv.tgz)
 
 
 #### Run BERT Fine-Tuning

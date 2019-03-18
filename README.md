@@ -202,7 +202,7 @@ To avoid typos in a long command, I am using Javed's step of creating a shell va
 
 ```shell
 
-$ export $BERT_BASE_DIR=./bert/uncased_L-12_H-768_A-12
+$ export BERT_BASE_DIR=./bert/uncased_L-12_H-768_A-12
 
 $ python bert/run_classifier.py \
 --task_name=cola \
@@ -316,7 +316,7 @@ The next step is to see how it performs on the Test set which has been kept back
 For this you run **run_classifier.py** again but with a different set of arguments
 
 ```shell
-$ export $BERT_BASE_DIR=./bert/uncased_L-12_H-768_A-12
+$ export BERT_BASE_DIR=./bert/uncased_L-12_H-768_A-12
 
 $ export TRAINED_CLASSIFIER=./bert_output/model.ckpt-[highest checkpoint number you saw]
 

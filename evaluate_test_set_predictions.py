@@ -33,12 +33,8 @@ def main():
     labels = []
     results = []
 
-    i = 0
     with open(test_tsv_file, 'r') as f:
         for line in f:
-            if i == 0:
-                i += 1 
-                continue
             fields = line.rstrip().split("\t")
             ids.append(fields[0])
             label = 0
